@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Premium Thread & Notions – M2S Thread Supply</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    /* ===== RESET & BASE ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --color-primary: #2C3E50;
+      --color-accent: #8B6F5E;
+      --color-accent-light: #C4A882;
+      --color-warm: #D4A574;
+      --color-sage: #7A8B6F;
+      --color-sage-light: #A8B89C;
+      --color-cream: #FAF6F1;
+      --color-linen: #F0EBE3;
+      --color-text: #2C3E50;
+      --color-text-light: #6B7B8D;
+      --color-white: #FFFFFF;
+      --color-border: #E0D8CF;
+      --font-heading: 'Cormorant Garamond', Georgia, serif;
+      --font-body: 'Montserrat', 'Helvetica Neue', sans-serif;
+    }
+
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--color-text);
+      background: var(--color-white);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { text-decoration: none; color: inherit; transition: color 0.3s; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* ===== ANNOUNCEMENT BAR ===== */
+    .announcement-bar {
+      background: var(--color-primary);
+      color: var(--color-white);
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 500;
+    }
+
+    /* ===== HEADER ===== */
+    .header {
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 24px;
+      font-size: 0.75rem;
+    }
+
+    .header-top a { color: var(--color-text-light); }
+    .header-top a:hover { color: var(--color-text); }
+
+    .header-top-links { display: flex; gap: 16px; }
+
+    .social-links { display: flex; gap: 14px; }
+    .social-links svg { width: 16px; height: 16px; fill: var(--color-text); }
+
+    .logo-area {
+      text-align: center;
+      padding: 16px 0 12px;
+    }
+
+    .logo {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      color: var(--color-text);
+    }
+
+    .logo span {
+      display: block;
+      font-size: 0.65rem;
+      font-family: var(--font-body);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    /* ===== NAVIGATION ===== */
+    .main-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0 24px 0;
+      gap: 8px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .nav-list {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      padding: 14px 0;
+    }
+
+    .nav-list a {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--color-text);
+      position: relative;
+      padding: 4px 0;
+    }
+
+    .nav-list a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--color-accent);
+      transition: width 0.3s;
+    }
+
+    .nav-list a:hover::after { width: 100%; }
+
+    .nav-icons {
+      display: flex;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .nav-icons svg { width: 20px; height: 20px; stroke: var(--color-text); fill: none; stroke-width: 1.5; }
+
+    .cart-icon {
+      position: relative;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: var(--color-accent);
+      color: white;
+      font-size: 0.55rem;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+    }
+
+    /* ===== HERO SECTION ===== */
+    .hero {
+      position: relative;
+      overflow: hidden;
+      height: 600px;
+    }
+
+    .hero-slides {
+      display: flex;
+      transition: transform 0.8s ease;
+      height: 100%;
+    }
+
+    .hero-slide {
+      min-width: 100%;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-slide-1 {
+      background: linear-gradient(135deg, var(--color-accent) 0%, #A0846E 50%, var(--color-accent-light) 100%);
+    }
+
+    .hero-slide-2 {
+      background: linear-gradient(135deg, var(--color-sage) 0%, #6B7D5E 50%, var(--color-sage-light) 100%);
+    }
+
+    .hero-slide-3 {
+      background: linear-gradient(135deg, var(--color-primary) 0%, #3D5166 50%, #5A7A94 100%);
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 80px;
+      max-width: 600px;
+    }
+
+    .hero-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 16px;
+      font-weight: 500;
+    }
+
+    .hero-title {
+      font-family: var(--font-heading);
+      font-size: 3.2rem;
+      font-weight: 400;
+      color: var(--color-white);
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .hero-desc {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 32px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 36px;
+      font-size: 0.7rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      transition: all 0.3s;
+    }
+
+    .btn-white {
+      background: var(--color-white);
+      color: var(--color-text);
+    }
+
+    .btn-white:hover {
+      background: var(--color-cream);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--color-text);
+      color: var(--color-text);
+    }
+
+    .btn-outline:hover {
+      background: var(--color-text);
+      color: var(--color-white);
+    }
+
+    .btn-dark {
+      background: var(--color-text);
+      color: var(--color-white);
+    }
+
+    .btn-dark:hover {
+      background: #1a2a3a;
+    }
+
+    .hero-pattern {
+      position: absolute;
+      right: 60px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 400px;
+      height: 400px;
+      opacity: 0.15;
+    }
+
+    .hero-pattern svg { width: 100%; height: 100%; }
+
+    .hero-dots {
+      position: absolute;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+      z-index: 5;
+    }
+
+    .hero-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .hero-dot.active { background: var(--color-white); }
+
+    /* ===== FEATURE CARDS ===== */
+    .feature-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      padding: 64px 0;
+    }
+
+    .feature-card {
+      position: relative;
+      background: var(--color-linen);
+      overflow: hidden;
+      height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 32px;
+      transition: transform 0.3s;
+    }
+
+    .feature-card:hover { transform: translateY(-4px); }
+
+    .feature-card-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .feature-card h3 {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .feature-card p {
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .feature-card .btn { align-self: flex-start; }
+
+    .feature-card-bg {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 55%;
+      height: 100%;
+      opacity: 0.08;
+    }
+
+    .feature-card:nth-child(1) { background: #F5EDE6; }
+    .feature-card:nth-child(2) { background: #E8EDE4; }
+    .feature-card:nth-child(3) { background: #EDE8E4; }
+
+    /* ===== SECTION HEADINGS ===== */
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+    }
+
+    .section-link {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--color-accent);
+    }
+
+    .section-link:hover { color: var(--color-text); }
+
+    /* ===== PRODUCT GRID ===== */
+    .products-section {
+      padding: 40px 0 80px;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+
+    .product-card {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image {
+      aspect-ratio: 1;
+      background: var(--color-linen);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .product-image svg {
+      width: 60%;
+      height: 60%;
+      opacity: 0.12;
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      padding: 4px 10px;
+      z-index: 2;
+    }
+
+    .badge-new { background: var(--color-accent); color: white; }
+    .badge-best { background: var(--color-sage); color: white; }
+
+    .product-add {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--color-text);
+      color: white;
+      padding: 10px 20px;
+      font-size: 0.65rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 600;
+      opacity: 0;
+      transition: all 0.3s;
+      white-space: nowrap;
+    }
+
+    .product-card:hover .product-add {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .product-info { padding: 14px 0; }
+
+    .product-name {
+      font-size: 0.72rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      font-weight: 500;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+
+    .product-price {
+      font-size: 0.8rem;
+      color: var(--color-accent);
+      font-weight: 500;
+    }
+
+    .product-rating {
+      font-size: 0.7rem;
+      color: var(--color-warm);
+      margin-bottom: 2px;
+    }
+
+    /* ===== COLLECTION BANNER ===== */
+    .collection-banner {
+      display: flex;
+      min-height: 480px;
+      overflow: hidden;
+    }
+
+    .collection-banner-image {
+      flex: 1;
+      background: var(--color-sage);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .collection-banner-image svg {
+      width: 50%;
+      height: 50%;
+      opacity: 0.15;
+    }
+
+    .collection-banner-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px;
+      background: var(--color-cream);
+    }
+
+    .collection-banner-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .collection-banner-title {
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+
+    .collection-banner-desc {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      margin-bottom: 32px;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* ===== CATEGORY TABS ===== */
+    .favorites-section {
+      padding: 80px 0;
+    }
+
+    .category-tabs {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 0;
+    }
+
+    .category-tab {
+      font-size: 0.7rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--color-text-light);
+      padding: 12px 4px;
+      border-bottom: 2px solid transparent;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .category-tab:hover { color: var(--color-text); }
+    .category-tab.active {
+      color: var(--color-text);
+      border-bottom-color: var(--color-accent);
+    }
+
+    .favorites-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    /* ===== CALENDAR / SEASONAL BANNER ===== */
+    .seasonal-banner {
+      background: var(--color-primary);
+      display: flex;
+      min-height: 400px;
+    }
+
+    .seasonal-image {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.05);
+    }
+
+    .seasonal-image svg {
+      width: 40%;
+      height: 40%;
+      opacity: 0.2;
+    }
+
+    .seasonal-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px;
+      color: var(--color-white);
+    }
+
+    .seasonal-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      opacity: 0.7;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .seasonal-title {
+      font-family: var(--font-heading);
+      font-size: 2.8rem;
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 32px;
+    }
+
+    /* ===== ABOUT SECTION ===== */
+    .about-section {
+      display: flex;
+      min-height: 480px;
+    }
+
+    .about-image {
+      flex: 1;
+      background: var(--color-linen);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-image svg {
+      width: 40%;
+      height: 40%;
+      opacity: 0.12;
+    }
+
+    .about-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 60px 80px;
+      background: var(--color-cream);
+    }
+
+    .about-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--color-accent);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .about-title {
+      font-family: var(--font-heading);
+      font-size: 2.2rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 20px;
+    }
+
+    .about-desc {
+      font-size: 0.85rem;
+      color: var(--color-text-light);
+      margin-bottom: 32px;
+      line-height: 1.8;
+      font-weight: 300;
+    }
+
+    /* ===== MARQUEE ===== */
+    .marquee-section {
+      padding: 64px 0;
+      overflow: hidden;
+    }
+
+    .marquee-title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      text-align: center;
+      margin-bottom: 32px;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--color-text-light);
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+    }
+
+    .marquee-track {
+      display: flex;
+      animation: marquee 30s linear infinite;
+      width: max-content;
+    }
+
+    .marquee-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 24px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .marquee-item span {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--color-text);
+    }
+
+    .marquee-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--color-accent-light);
+    }
+
+    .marquee-item:hover span { color: var(--color-accent); }
+
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ===== NEWSLETTER ===== */
+    .newsletter {
+      padding: 80px 0;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .newsletter-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      font-weight: 600;
+    }
+
+    .newsletter-desc {
+      font-size: 0.95rem;
+      line-height: 1.8;
+      margin-bottom: 32px;
+      max-width: 600px;
+      font-weight: 300;
+      color: var(--color-text);
+    }
+
+    .newsletter-form {
+      display: flex;
+      border-bottom: 1px solid var(--color-text);
+      max-width: 600px;
+    }
+
+    .newsletter-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 12px 0;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--color-text);
+      outline: none;
+    }
+
+    .newsletter-input::placeholder { color: var(--color-text-light); }
+
+    .newsletter-btn {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      font-weight: 600;
+      color: var(--color-text);
+      padding: 12px 0 12px 20px;
+    }
+
+    .newsletter-btn:hover { color: var(--color-accent); }
+
+    /* ===== FOOTER ===== */
+    .footer {
+      padding: 48px 0 32px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .footer-social {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 40px;
+    }
+
+    .footer-social svg { width: 18px; height: 18px; fill: var(--color-text); transition: fill 0.3s; }
+    .footer-social a:hover svg { fill: var(--color-accent); }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr) auto;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.65rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+
+    .footer-col a {
+      display: block;
+      font-size: 0.8rem;
+      color: var(--color-text-light);
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .footer-col a:hover { color: var(--color-text); }
+
+    .footer-logo {
+      width: 80px;
+      height: 80px;
+      opacity: 0.6;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--color-text-light);
+      padding-top: 24px;
+      border-top: 1px solid var(--color-border);
+    }
+
+    .back-to-top {
+      width: 44px;
+      height: 44px;
+      border: 1px solid var(--color-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 24px auto 0;
+      transition: all 0.3s;
+    }
+
+    .back-to-top:hover {
+      border-color: var(--color-text);
+    }
+
+    .back-to-top svg { width: 16px; height: 16px; stroke: var(--color-text); fill: none; stroke-width: 2; }
+
+    /* ===== DECORATIVE THREAD SVG PATTERNS ===== */
+    .thread-icon { fill: var(--color-accent); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .nav-list { gap: 16px; flex-wrap: wrap; justify-content: center; }
+      .hero { height: 400px; }
+      .hero-title { font-size: 2rem; }
+      .hero-content { padding: 0 32px; }
+      .feature-cards { grid-template-columns: 1fr; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+      .favorites-grid { grid-template-columns: repeat(2, 1fr); }
+      .collection-banner, .seasonal-banner, .about-section { flex-direction: column; }
+      .collection-banner-content, .seasonal-content, .about-content { padding: 40px 32px; }
+      .footer-grid { grid-template-columns: repeat(2, 1fr); }
+      .category-tabs { flex-wrap: wrap; gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    Free U.S. Shipping on Orders $75+*
+  </div>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-top">
+      <div class="header-top-links">
+        <a href="#">Orders</a>
+        <a href="#">Profile</a>
+      </div>
+      <div class="social-links">
+        <a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M16 4H8a4 4 0 00-4 4v8a4 4 0 004 4h8a4 4 0 004-4V8a4 4 0 00-4-4z"/><circle cx="12" cy="12" r="3"/><circle cx="17.5" cy="6.5" r=".5"/></svg>
+        </a>
+        <a href="#" aria-label="Pinterest">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.182-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.425 1.808-2.425.853 0 1.265.64 1.265 1.408 0 .858-.546 2.14-.828 3.33-.236.995.5 1.807 1.48 1.807 1.778 0 3.144-1.874 3.144-4.58 0-2.393-1.72-4.068-4.177-4.068-2.845 0-4.515 2.135-4.515 4.34 0 .859.331 1.781.745 2.282a.3.3 0 01.069.288l-.278 1.133c-.044.183-.145.222-.335.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.965-.527-2.291-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.937.29 1.931.446 2.962.446 5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div class="logo-area">
+      <a href="#" class="logo">
+        M2S THREAD SUPPLY
+        <span>Premium Thread & Notions</span>
+      </a>
+    </div>
+
+    <nav class="main-nav">
+      <div class="nav-icons" style="margin-right: auto;">
+        <button aria-label="Search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+        </button>
+      </div>
+      <ul class="nav-list">
+        <li><a href="#">Thread Collections</a></li>
+        <li><a href="#">Needles & Notions</a></li>
+        <li><a href="#">Fabric & Linen</a></li>
+        <li><a href="#">Patterns & Kits</a></li>
+        <li><a href="#">Gifting & Bundles</a></li>
+      </ul>
+      <div class="nav-icons" style="margin-left: auto;">
+        <button aria-label="Account">
+          <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </button>
+        <a href="#" class="cart-icon" aria-label="Cart">
+          <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg>
+          <span class="cart-count">0</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO SLIDESHOW -->
+  <section class="hero">
+    <div class="hero-slides" id="heroSlides">
+      <div class="hero-slide hero-slide-1">
+        <div class="hero-content">
+          <p class="hero-label">Spring Collection</p>
+          <h1 class="hero-title">Thread for Every Stitch</h1>
+          <p class="hero-desc">Hand-dyed artisan threads and curated notions for makers who value craft and quality.</p>
+          <a href="#" class="btn btn-white">Shop New Arrivals</a>
+        </div>
+        <div class="hero-pattern">
+          <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="80" fill="none" stroke="white" stroke-width="0.5"/><circle cx="100" cy="100" r="60" fill="none" stroke="white" stroke-width="0.5"/><circle cx="100" cy="100" r="40" fill="none" stroke="white" stroke-width="0.5"/><line x1="20" y1="100" x2="180" y2="100" stroke="white" stroke-width="0.3"/><line x1="100" y1="20" x2="100" y2="180" stroke="white" stroke-width="0.3"/><line x1="40" y1="40" x2="160" y2="160" stroke="white" stroke-width="0.3"/><line x1="160" y1="40" x2="40" y2="160" stroke="white" stroke-width="0.3"/></svg>
+        </div>
+      </div>
+      <div class="hero-slide hero-slide-2">
+        <div class="hero-content">
+          <p class="hero-label">New Arrivals</p>
+          <h1 class="hero-title">Botanical Embroidery Kits</h1>
+          <p class="hero-desc">Complete kits with everything you need to create beautiful botanical designs.</p>
+          <a href="#" class="btn btn-white">Shop Kits</a>
+        </div>
+      </div>
+      <div class="hero-slide hero-slide-3">
+        <div class="hero-content">
+          <p class="hero-label">Handcrafted Quality</p>
+          <h1 class="hero-title">Linen & Natural Fabrics</h1>
+          <p class="hero-desc">Ethically sourced linens and natural fabrics perfect for your next project.</p>
+          <a href="#" class="btn btn-white">Shop Fabric</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-dots">
+      <div class="hero-dot active" data-slide="0"></div>
+      <div class="hero-dot" data-slide="1"></div>
+      <div class="hero-dot" data-slide="2"></div>
+    </div>
+  </section>
+
+  <!-- FEATURE CARDS -->
+  <div class="container">
+    <div class="feature-cards">
+      <div class="feature-card">
+        <div class="feature-card-bg">
+          <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="0.5"/><circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="0.5"/><circle cx="50" cy="50" r="10" fill="none" stroke="currentColor" stroke-width="0.5"/></svg>
+        </div>
+        <p class="feature-card-label">Hand-Dyed Collection</p>
+        <h3>Artisan Thread</h3>
+        <p>Small-batch, hand-dyed threads in seasonal colorways.</p>
+        <a href="#" class="btn btn-outline">Shop Thread</a>
+      </div>
+      <div class="feature-card">
+        <p class="feature-card-label">New Patterns</p>
+        <h3>Embroidery Kits</h3>
+        <p>Complete kits with thread, fabric, needle, and illustrated pattern.</p>
+        <a href="#" class="btn btn-outline">Shop Kits</a>
+      </div>
+      <div class="feature-card">
+        <p class="feature-card-label">Premium Quality</p>
+        <h3>Linen & Tools</h3>
+        <p>Fine linens, hoops, and hand-finished notions for every project.</p>
+        <a href="#" class="btn btn-outline">Shop Notions</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW ARRIVALS PRODUCT GRID -->
+  <section class="products-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">What's New</h2>
+        <a href="#" class="section-link">View All New</a>
+      </div>
+      <div class="product-grid">
+        <div class="product-card">
+          <div class="product-image" style="background: #F0E6DC;">
+            <span class="product-badge badge-new">New</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="1"/><line x1="50" y1="25" x2="50" y2="10" stroke="currentColor" stroke-width="0.5"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Sage Garden | Thread Set</p>
+            <p class="product-price">$18.00</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #E8DED4;">
+            <span class="product-badge badge-new">New</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><rect x="25" y="25" width="50" height="50" rx="2" fill="none" stroke="currentColor" stroke-width="1"/><line x1="25" y1="50" x2="75" y2="50" stroke="currentColor" stroke-width="0.5"/><line x1="50" y1="25" x2="50" y2="75" stroke="currentColor" stroke-width="0.5"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Wildflower | Embroidery Kit</p>
+            <p class="product-price">$32.00</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #E4E8DE;">
+            <span class="product-badge badge-new">New</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><ellipse cx="50" cy="50" rx="30" ry="20" fill="none" stroke="currentColor" stroke-width="1"/><ellipse cx="50" cy="50" rx="20" ry="30" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Rose | Mini Thread Pack</p>
+            <p class="product-price">$8.00</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #F2EBE2;">
+            <span class="product-badge badge-new">New</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><path d="M50 20 L80 80 L20 80 Z" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Meadow | Needle Set</p>
+            <p class="product-price">$14.00</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #ECE4DA;">
+            <span class="product-badge badge-new">New</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="30" fill="none" stroke="currentColor" stroke-width="1"/><path d="M50 20 Q65 50 50 80 Q35 50 50 20" fill="none" stroke="currentColor" stroke-width="0.7"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-name">Autumn Harvest | Thread Set</p>
+            <p class="product-price">$22.00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COLLECTION BANNER -->
+  <section class="collection-banner">
+    <div class="collection-banner-image">
+      <svg viewBox="0 0 200 200"><circle cx="100" cy="100" r="70" fill="none" stroke="white" stroke-width="0.5"/><circle cx="100" cy="100" r="50" fill="none" stroke="white" stroke-width="0.5"/><circle cx="100" cy="100" r="30" fill="none" stroke="white" stroke-width="0.5"/><path d="M30 100 Q100 30 170 100 Q100 170 30 100" fill="none" stroke="white" stroke-width="0.5"/></svg>
+    </div>
+    <div class="collection-banner-content">
+      <p class="collection-banner-label">Signature Collection</p>
+      <h2 class="collection-banner-title">Linen-Wrapped Thread Bundles</h2>
+      <p class="collection-banner-desc">Thoughtfully curated. Designed for the dedicated maker. Each bundle features hand-selected threads wrapped in our signature linen packaging.</p>
+      <a href="#" class="btn btn-dark">Shop Collection</a>
+    </div>
+  </section>
+
+  <!-- SEASONAL BANNER -->
+  <section class="seasonal-banner">
+    <div class="seasonal-image">
+      <svg viewBox="0 0 200 200"><rect x="40" y="40" width="120" height="120" rx="4" fill="none" stroke="white" stroke-width="0.5"/><line x1="40" y1="70" x2="160" y2="70" stroke="white" stroke-width="0.3"/><line x1="40" y1="100" x2="160" y2="100" stroke="white" stroke-width="0.3"/><line x1="40" y1="130" x2="160" y2="130" stroke="white" stroke-width="0.3"/><line x1="70" y1="40" x2="70" y2="160" stroke="white" stroke-width="0.3"/><line x1="100" y1="40" x2="100" y2="160" stroke="white" stroke-width="0.3"/><line x1="130" y1="40" x2="130" y2="160" stroke="white" stroke-width="0.3"/></svg>
+    </div>
+    <div class="seasonal-content">
+      <p class="seasonal-label">Discover the 2026</p>
+      <h2 class="seasonal-title">Seasonal Thread Calendar</h2>
+      <a href="#" class="btn btn-white">Shop Now</a>
+    </div>
+  </section>
+
+  <!-- CUSTOMER FAVORITES -->
+  <section class="favorites-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Customer Favorites</h2>
+        <a href="#" class="section-link">View All</a>
+      </div>
+      <div class="category-tabs">
+        <button class="category-tab active">Thread Sets</button>
+        <button class="category-tab">Embroidery Kits</button>
+        <button class="category-tab">Needles & Tools</button>
+        <button class="category-tab">Linen & Fabric</button>
+      </div>
+      <div class="favorites-grid">
+        <div class="product-card">
+          <div class="product-image" style="background: #F0E6DC;">
+            <span class="product-badge badge-best">Bestseller</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="50" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="1"/><circle cx="50" cy="50" r="5" fill="currentColor" opacity="0.3"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-rating">&#9733;&#9733;&#9733;&#9733;&#9733; (10)</p>
+            <p class="product-name">Thread Club Kit</p>
+            <p class="product-price">$28.00</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #E8E4DE;">
+            <span class="product-badge badge-best">Bestseller</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><rect x="30" y="30" width="40" height="40" fill="none" stroke="currentColor" stroke-width="1"/><rect x="35" y="35" width="30" height="30" fill="none" stroke="currentColor" stroke-width="0.5"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-rating">&#9733;&#9733;&#9733;&#9733;&#9733; (13)</p>
+            <p class="product-name">Meadow | Stitch Kit</p>
+            <p class="product-price">$24.50</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #E4E8DE;">
+            <span class="product-badge badge-best">Bestseller</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><line x1="30" y1="30" x2="70" y2="70" stroke="currentColor" stroke-width="1"/><line x1="30" y1="70" x2="70" y2="30" stroke="currentColor" stroke-width="1"/><circle cx="50" cy="50" r="20" fill="none" stroke="currentColor" stroke-width="0.5"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-rating">&#9733;&#9733;&#9733;&#9733;&#9733; (8)</p>
+            <p class="product-name">Botanist | Washi Tape</p>
+            <p class="product-price">$6.00</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #F2EDE6;">
+            <span class="product-badge badge-best">Bestseller</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><path d="M30 50 Q50 20 70 50 Q50 80 30 50" fill="none" stroke="currentColor" stroke-width="1"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-rating">&#9733;&#9733;&#9733;&#9733;&#9734; (4)</p>
+            <p class="product-name">Dogwood | Notecards Set of 4</p>
+            <p class="product-price">$12.00</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #ECE6DC;">
+            <span class="product-badge badge-best">Bestseller</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><circle cx="40" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="0.7"/><circle cx="60" cy="50" r="15" fill="none" stroke="currentColor" stroke-width="0.7"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-rating">&#9733;&#9733;&#9733;&#9733;&#9733; (13)</p>
+            <p class="product-name">Prairie | Thread Writing Set</p>
+            <p class="product-price">$15.50</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #E8DDD4;">
+            <span class="product-badge badge-best">Bestseller</span>
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><rect x="25" y="35" width="50" height="30" rx="3" fill="none" stroke="currentColor" stroke-width="1"/><line x1="25" y1="35" x2="50" y2="55" stroke="currentColor" stroke-width="0.5"/><line x1="75" y1="35" x2="50" y2="55" stroke="currentColor" stroke-width="0.5"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-rating">&#9733;&#9733;&#9733;&#9733;&#9733; (3)</p>
+            <p class="product-name">Christmas Rose | Gift Wrap</p>
+            <p class="product-price">$5.50</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #F0EAE2;">
+            <button class="product-add">Add to Cart</button>
+            <svg viewBox="0 0 100 100"><path d="M25 75 L50 25 L75 75" fill="none" stroke="currentColor" stroke-width="1"/><line x1="35" y1="55" x2="65" y2="55" stroke="currentColor" stroke-width="0.5"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-rating">&#9733;&#9733;&#9733;&#9733;&#9733; (13)</p>
+            <p class="product-name">Garden | Thread Writing Set</p>
+            <p class="product-price">$15.50</p>
+          </div>
+        </div>
+        <div class="product-card">
+          <div class="product-image" style="background: #E4DED6;">
+            <button class="product-add" style="background: var(--color-text-light);">Sold Out</button>
+            <svg viewBox="0 0 100 100"><circle cx="50" cy="50" r="25" fill="none" stroke="currentColor" stroke-width="0.7"/><path d="M35 50 Q50 30 65 50 Q50 70 35 50" fill="none" stroke="currentColor" stroke-width="0.7"/></svg>
+          </div>
+          <div class="product-info">
+            <p class="product-rating">&#9733;&#9733;&#9733;&#9733;&#9734; (8)</p>
+            <p class="product-name">Botanist | Linen Tea Towel</p>
+            <p class="product-price">$26.00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section class="about-section">
+    <div class="about-image">
+      <svg viewBox="0 0 200 200"><circle cx="100" cy="80" r="30" fill="none" stroke="currentColor" stroke-width="0.8"/><path d="M70 110 Q100 90 130 110" fill="none" stroke="currentColor" stroke-width="0.5"/><line x1="100" y1="80" x2="100" y2="160" stroke="currentColor" stroke-width="0.5"/><path d="M85 130 Q100 120 115 130" fill="none" stroke="currentColor" stroke-width="0.5"/><path d="M80 145 Q100 135 120 145" fill="none" stroke="currentColor" stroke-width="0.5"/></svg>
+    </div>
+    <div class="about-content">
+      <p class="about-label">About Us</p>
+      <h2 class="about-title">Crafted with care, made for makers</h2>
+      <p class="about-desc">M2S Thread Supply is an independent craft brand rooted in a love of handwork and natural materials. From hand-dyed threads to curated notions, every product is selected with attention to quality, beauty, and the joy of making something by hand.</p>
+      <a href="#" class="btn btn-outline">Read More</a>
+    </div>
+  </section>
+
+  <!-- TRENDING MARQUEE -->
+  <section class="marquee-section">
+    <p class="marquee-title">Trending Collections</p>
+    <div class="marquee-track">
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Sage Garden</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Wildflower</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Autumn Harvest</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Botanist</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Prairie</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Meadow</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Rose Garden</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Clover</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <!-- Duplicate for seamless loop -->
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Sage Garden</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Wildflower</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Autumn Harvest</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Botanist</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Prairie</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Meadow</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Rose Garden</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Clover</span></div>
+      <div class="marquee-item"><span class="marquee-dot"></span><span>Shop</span></div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter">
+    <div class="container">
+      <p class="newsletter-label">Letters from the Studio</p>
+      <p class="newsletter-desc">Subscribe for 15% off your first purchase, early access to new collections, exclusive discounts, and free pattern downloads to inspire your next project.</p>
+      <form class="newsletter-form" onsubmit="return false;">
+        <input type="email" class="newsletter-input" placeholder="Your email" aria-label="Email address">
+        <button type="submit" class="newsletter-btn">Subscribe</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+        </a>
+        <a href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M16 4H8a4 4 0 00-4 4v8a4 4 0 004 4h8a4 4 0 004-4V8a4 4 0 00-4-4z"/><circle cx="12" cy="12" r="3"/><circle cx="17.5" cy="6.5" r=".5"/></svg>
+        </a>
+        <a href="#" aria-label="Pinterest">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.236 2.636 7.855 6.356 9.312-.088-.791-.167-2.005.035-2.868.182-.78 1.172-4.97 1.172-4.97s-.299-.598-.299-1.482c0-1.388.806-2.425 1.808-2.425.853 0 1.265.64 1.265 1.408 0 .858-.546 2.14-.828 3.33-.236.995.5 1.807 1.48 1.807 1.778 0 3.144-1.874 3.144-4.58 0-2.393-1.72-4.068-4.177-4.068-2.845 0-4.515 2.135-4.515 4.34 0 .859.331 1.781.745 2.282a.3.3 0 01.069.288l-.278 1.133c-.044.183-.145.222-.335.134-1.249-.581-2.03-2.407-2.03-3.874 0-3.154 2.292-6.052 6.608-6.052 3.469 0 6.165 2.473 6.165 5.776 0 3.447-2.173 6.22-5.19 6.22-1.013 0-1.965-.527-2.291-1.148l-.623 2.378c-.226.869-.835 1.958-1.244 2.621.937.29 1.931.446 2.962.446 5.523 0 10-4.477 10-10S17.523 2 12 2z"/></svg>
+        </a>
+      </div>
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4>Customer Care</h4>
+          <a href="#">FAQ</a>
+          <a href="#">Free Patterns</a>
+          <a href="#">Gift Cards</a>
+          <a href="#">Terms of Use</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Accessibility</a>
+        </div>
+        <div class="footer-col">
+          <h4>Find Out More</h4>
+          <a href="#">About Us</a>
+          <a href="#">Our Process</a>
+          <a href="#">Portfolio</a>
+          <a href="#">Journal</a>
+          <a href="#">Contact</a>
+        </div>
+        <div class="footer-col">
+          <h4>Wholesale</h4>
+          <a href="#">Apply</a>
+          <a href="#">Login</a>
+          <a href="#">Stockists</a>
+        </div>
+        <div class="footer-col">
+          <!-- Thread spool icon -->
+          <svg class="footer-logo" viewBox="0 0 100 100">
+            <ellipse cx="50" cy="30" rx="25" ry="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="25" y1="30" x2="25" y2="70" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="75" y1="30" x2="75" y2="70" stroke="currentColor" stroke-width="1.5"/>
+            <ellipse cx="50" cy="70" rx="25" ry="10" fill="none" stroke="currentColor" stroke-width="1.5"/>
+            <line x1="30" y1="40" x2="30" y2="60" stroke="currentColor" stroke-width="0.5"/>
+            <line x1="40" y1="35" x2="40" y2="65" stroke="currentColor" stroke-width="0.5"/>
+            <line x1="50" y1="33" x2="50" y2="67" stroke="currentColor" stroke-width="0.5"/>
+            <line x1="60" y1="35" x2="60" y2="65" stroke="currentColor" stroke-width="0.5"/>
+            <line x1="70" y1="40" x2="70" y2="60" stroke="currentColor" stroke-width="0.5"/>
+          </svg>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>Copyright &copy; 2026, M2S Thread Supply. All rights reserved.</p>
+        <span>United States (USD $)</span>
+      </div>
+      <a href="#" class="back-to-top" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">
+        <svg viewBox="0 0 24 24"><path d="M18 15l-6-6-6 6"/></svg>
+      </a>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Hero slideshow
+    const slides = document.getElementById('heroSlides');
+    const dots = document.querySelectorAll('.hero-dot');
+    let currentSlide = 0;
+    const totalSlides = 3;
+
+    function goToSlide(index) {
+      currentSlide = index;
+      slides.style.transform = `translateX(-${currentSlide * 100}%)`;
+      dots.forEach((dot, i) => dot.classList.toggle('active', i === currentSlide));
+    }
+
+    dots.forEach(dot => {
+      dot.addEventListener('click', () => goToSlide(parseInt(dot.dataset.slide)));
+    });
+
+    setInterval(() => {
+      goToSlide((currentSlide + 1) % totalSlides);
+    }, 5000);
+
+    // Category tabs
+    const tabs = document.querySelectorAll('.category-tab');
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>
