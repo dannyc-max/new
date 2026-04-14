@@ -31,11 +31,15 @@ index.html                                   # marketing page (unchanged)
 
 ## Pipelines
 
-| Source  | Function          | Schedule    | Target tables                    |
-| ------- | ----------------- | ----------- | -------------------------------- |
-| Webflow | `hyper-processor` | 6 AM UTC    | `orders`                         |
-| Stripe  | `stripe-sync`     | 7 AM UTC    | `stripe_charges`                 |
-| Monto   | `monto-sync`      | 8 AM UTC    | `subscriptions`, `monto_sync_log`|
+| Source  | Function              | Slug (URL)        | Schedule  | Target tables                    |
+| ------- | --------------------- | ----------------- | --------- | -------------------------------- |
+| Webflow | `sync-webflow-orders` | `hyper-processor` | 6 AM UTC  | `orders`                         |
+| Stripe  | `stripe-sync`         | `stripe-sync`     | 7 AM UTC  | `stripe_charges`                 |
+| Monto   | `monto-sync`          | `monto-sync`      | 8 AM UTC  | `subscriptions`, `monto_sync_log`|
+
+> The Webflow function's slug (`hyper-processor`) is immutable in Supabase, so
+> the URL and cron job still reference the original slug even though the
+> display name has been updated to `sync-webflow-orders`.
 
 Each job is scheduled through `pg_cron` and invokes the corresponding
 edge function via `pg_net`. See the scheduling migration for the exact SQL.
