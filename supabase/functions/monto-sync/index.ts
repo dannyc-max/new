@@ -163,16 +163,23 @@ async function buildOrderQueue(
       .from("orders")
       .select("order_id")
       .order("accepted_on", { ascending: false })
-      .limit(maxToProcess);
+      .range(0, maxToProcess - 1);
     if (error) throw new Error(error.message);
     return (data ?? []).map((r: { order_id: string }) => r.order_id);
   }
+
+  // NOTE: PostgREST caps `select()` at 1000 rows by default. Our orders
+  // table has ~3500 rows; without `.range()` the "never-checked" bucket
+  // appears empty once the 1000 most-recent orders have been logged, and
+  // the backfill stalls. Using .range() up to a large upper bound pulls
+  // the full set in a single request.
 
   // Priority 1: orders with a known subscription — recheck every run.
   const { data: knownSubOrders, error: e1 } = await supabase
     .from("monto_sync_log")
     .select("order_id")
-    .eq("has_subscription", true);
+    .eq("has_subscription", true)
+    .range(0, 9999);
   if (e1) throw new Error(e1.message);
 
   const known = new Set<string>(
@@ -183,12 +190,14 @@ async function buildOrderQueue(
   const { data: allOrders, error: e2 } = await supabase
     .from("orders")
     .select("order_id, accepted_on")
-    .order("accepted_on", { ascending: false });
+    .order("accepted_on", { ascending: false })
+    .range(0, 49999);
   if (e2) throw new Error(e2.message);
 
   const { data: checkedRows, error: e3 } = await supabase
     .from("monto_sync_log")
-    .select("order_id, last_checked_at, has_subscription");
+    .select("order_id, last_checked_at, has_subscription")
+    .range(0, 49999);
   if (e3) throw new Error(e3.message);
 
   const checkedMap = new Map<
