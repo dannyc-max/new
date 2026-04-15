@@ -159,46 +159,47 @@ async function buildOrderQueue(
   maxToProcess: number,
 ): Promise<string[]> {
   if (mode === "full") {
-    const { data, error } = await supabase
-      .from("orders")
-      .select("order_id")
-      .order("accepted_on", { ascending: false })
-      .range(0, maxToProcess - 1);
-    if (error) throw new Error(error.message);
-    return (data ?? []).map((r: { order_id: string }) => r.order_id);
+    const data = await fetchAllPaged<{ order_id: string }>(
+      supabase,
+      "orders",
+      "order_id",
+      { order: { column: "accepted_on", ascending: false } },
+    );
+    return data.map((r) => r.order_id).slice(0, maxToProcess);
   }
 
-  // NOTE: PostgREST caps `select()` at 1000 rows by default. Our orders
-  // table has ~3500 rows; without `.range()` the "never-checked" bucket
-  // appears empty once the 1000 most-recent orders have been logged, and
-  // the backfill stalls. Using .range() up to a large upper bound pulls
-  // the full set in a single request.
+  // NOTE: PostgREST caps `select()` at 1000 rows server-side regardless of
+  // what a client .range() asks for. Our orders table has ~3500 rows, so we
+  // must paginate manually to get the full set.
 
   // Priority 1: orders with a known subscription — recheck every run.
-  const { data: knownSubOrders, error: e1 } = await supabase
-    .from("monto_sync_log")
-    .select("order_id")
-    .eq("has_subscription", true)
-    .range(0, 9999);
-  if (e1) throw new Error(e1.message);
-
-  const known = new Set<string>(
-    (knownSubOrders ?? []).map((r: { order_id: string }) => r.order_id),
+  const knownSubOrders = await fetchAllPaged<{ order_id: string }>(
+    supabase,
+    "monto_sync_log",
+    "order_id",
+    { eq: { column: "has_subscription", value: true } },
   );
 
-  // Priority 2: orders we've never checked.
-  const { data: allOrders, error: e2 } = await supabase
-    .from("orders")
-    .select("order_id, accepted_on")
-    .order("accepted_on", { ascending: false })
-    .range(0, 49999);
-  if (e2) throw new Error(e2.message);
+  const known = new Set<string>(knownSubOrders.map((r) => r.order_id));
 
-  const { data: checkedRows, error: e3 } = await supabase
-    .from("monto_sync_log")
-    .select("order_id, last_checked_at, has_subscription")
-    .range(0, 49999);
-  if (e3) throw new Error(e3.message);
+  // Priority 2: orders we've never checked.
+  const allOrders = await fetchAllPaged<
+    { order_id: string; accepted_on: string | null }
+  >(
+    supabase,
+    "orders",
+    "order_id, accepted_on",
+    { order: { column: "accepted_on", ascending: false } },
+  );
+
+  const checkedRows = await fetchAllPaged<
+    { order_id: string; last_checked_at: string; has_subscription: boolean }
+  >(
+    supabase,
+    "monto_sync_log",
+    "order_id, last_checked_at, has_subscription",
+    {},
+  );
 
   const checkedMap = new Map<
     string,
@@ -235,6 +236,34 @@ async function buildOrderQueue(
   for (const id of staleNulls) queue.push(id);
 
   return queue.slice(0, maxToProcess);
+}
+
+// Paginate around PostgREST's server-enforced 1000-row cap. We walk the
+// table in fixed chunks until a short page tells us we're done.
+async function fetchAllPaged<T>(
+  supabase: ReturnType<typeof createClient>,
+  table: string,
+  columns: string,
+  opts: {
+    eq?: { column: string; value: unknown };
+    order?: { column: string; ascending: boolean };
+  },
+): Promise<T[]> {
+  const PAGE = 1000;
+  const out: T[] = [];
+  for (let from = 0; from < 200_000; from += PAGE) {
+    let q = supabase.from(table).select(columns);
+    if (opts.eq) q = q.eq(opts.eq.column, opts.eq.value);
+    if (opts.order) {
+      q = q.order(opts.order.column, { ascending: opts.order.ascending });
+    }
+    const { data, error } = await q.range(from, from + PAGE - 1);
+    if (error) throw new Error(error.message);
+    const batch = (data ?? []) as T[];
+    out.push(...batch);
+    if (batch.length < PAGE) break;
+  }
+  return out;
 }
 
 async function fetchForOrder(
