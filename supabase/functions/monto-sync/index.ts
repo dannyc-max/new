@@ -24,7 +24,11 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const MONTO_BASE = "https://api.monto.io";
-const CONCURRENCY = 20;
+// Monto rate-limits aggressively; keep concurrency low and retry 429s.
+const CONCURRENCY = 3;
+const INTER_CHUNK_DELAY_MS = 200;
+const MAX_429_RETRIES = 2;
+const RETRY_BACKOFF_MS = 2000;
 const DEFAULT_LIMIT = 2000;
 const WALL_CLOCK_BUDGET_MS = 120_000;
 
@@ -66,6 +70,8 @@ Deno.serve(async (req: Request) => {
   let subsUpserted = 0;
   let errors = 0;
   let timedOut = false;
+  const errorSamples: Array<{ order_id: string; error: string }> = [];
+  const errorStatusCounts: Record<string, number> = {};
 
   // Process in concurrent chunks.
   for (let i = 0; i < orderIds.length; i += CONCURRENCY) {
@@ -74,6 +80,7 @@ Deno.serve(async (req: Request) => {
       break;
     }
 
+    if (i > 0) await sleep(INTER_CHUNK_DELAY_MS);
     const chunk = orderIds.slice(i, i + CONCURRENCY);
     const results = await Promise.all(
       chunk.map((id) => fetchForOrder(id, MONTO_KEY)),
@@ -87,6 +94,10 @@ Deno.serve(async (req: Request) => {
       processed += 1;
       if (r.error) {
         errors += 1;
+        errorStatusCounts[r.error] = (errorStatusCounts[r.error] ?? 0) + 1;
+        if (errorSamples.length < 5) {
+          errorSamples.push({ order_id: r.order_id, error: r.error });
+        }
         continue;
       }
       logRows.push({
@@ -135,6 +146,8 @@ Deno.serve(async (req: Request) => {
     processed,
     subsUpserted,
     errors,
+    errorStatusCounts,
+    errorSamples,
     timedOut,
     durationMs: Date.now() - started,
   });
@@ -224,35 +237,53 @@ async function fetchForOrder(
 > {
   const url =
     `${MONTO_BASE}/orders/${encodeURIComponent(orderId)}/subscriptions?api_key=${encodeURIComponent(apiKey)}`;
-  try {
-    const resp = await fetch(url);
-    if (resp.status === 404) {
-      // Order unknown to Monto — treat as no subscriptions.
-      return { order_id: orderId, subscriptions: [], error: null };
+  let lastErr = "";
+  for (let attempt = 0; attempt <= MAX_429_RETRIES; attempt++) {
+    try {
+      const resp = await fetch(url);
+      if (resp.status === 404) {
+        return { order_id: orderId, subscriptions: [], error: null };
+      }
+      if (resp.status === 429 || resp.status === 502 || resp.status === 503) {
+        const body = await resp.text();
+        lastErr = `monto ${resp.status}: ${body.slice(0, 120)}`;
+        if (attempt < MAX_429_RETRIES) {
+          await sleep(RETRY_BACKOFF_MS * (attempt + 1));
+          continue;
+        }
+        return { order_id: orderId, subscriptions: [], error: lastErr };
+      }
+      if (!resp.ok) {
+        const body = await resp.text();
+        return {
+          order_id: orderId,
+          subscriptions: [],
+          error: `monto ${resp.status}: ${body.slice(0, 120)}`,
+        };
+      }
+      const body = await resp.json();
+      const subs: MontoSubscription[] = Array.isArray(body)
+        ? body
+        : Array.isArray(body?.subscriptions)
+        ? body.subscriptions
+        : Array.isArray(body?.data)
+        ? body.data
+        : [];
+      return { order_id: orderId, subscriptions: subs, error: null };
+    } catch (e) {
+      lastErr = e instanceof Error ? e.message : String(e);
+      if (attempt < MAX_429_RETRIES) {
+        await sleep(RETRY_BACKOFF_MS * (attempt + 1));
+        continue;
+      }
+      return { order_id: orderId, subscriptions: [], error: lastErr };
     }
-    if (!resp.ok) {
-      return {
-        order_id: orderId,
-        subscriptions: [],
-        error: `monto ${resp.status}`,
-      };
-    }
-    const body = await resp.json();
-    const subs: MontoSubscription[] = Array.isArray(body)
-      ? body
-      : Array.isArray(body?.subscriptions)
-      ? body.subscriptions
-      : Array.isArray(body?.data)
-      ? body.data
-      : [];
-    return { order_id: orderId, subscriptions: subs, error: null };
-  } catch (e) {
-    return {
-      order_id: orderId,
-      subscriptions: [],
-      error: e instanceof Error ? e.message : String(e),
-    };
   }
+  return { order_id: orderId, subscriptions: [], error: lastErr };
+}
+
+function sleep(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function json(body: unknown, status = 200) {

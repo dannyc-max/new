@@ -48,6 +48,7 @@ Deno.serve(async (req: Request) => {
 
   const url = new URL(req.url);
   const mode = url.searchParams.get("mode") ?? "incremental";
+  const cursorParam = url.searchParams.get("cursor") ?? undefined;
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
   // Incremental mode pulls the last 7 days of charges (enough buffer to catch
@@ -56,7 +57,7 @@ Deno.serve(async (req: Request) => {
     ? undefined
     : Math.floor(Date.now() / 1000) - 7 * 24 * 60 * 60;
 
-  let startingAfter: string | undefined;
+  let startingAfter: string | undefined = cursorParam;
   let totalFetched = 0;
   let totalUpserted = 0;
   const batchStart = Date.now();
