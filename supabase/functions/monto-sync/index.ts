@@ -172,15 +172,35 @@ async function buildOrderQueue(
   // what a client .range() asks for. Our orders table has ~3500 rows, so we
   // must paginate manually to get the full set.
 
-  // Priority 1: orders with a known subscription — recheck every run.
-  const knownSubOrders = await fetchAllPaged<{ order_id: string }>(
+  // Priority 1: orders with a known subscription — refresh on each run so
+  // status/cancellations stay current. During backfill (cron every few
+  // minutes) this would monopolise the ~56-req budget and starve the
+  // never-checked bucket, so we skip any known order that was already
+  // refreshed within KNOWN_REFRESH_COOLDOWN_MS. The daily cron still
+  // refreshes everything because 24h > the cooldown.
+  const KNOWN_REFRESH_COOLDOWN_MS = 6 * 60 * 60 * 1000; // 6h
+  const knownSubRows = await fetchAllPaged<
+    { order_id: string; last_checked_at: string }
+  >(
     supabase,
     "monto_sync_log",
-    "order_id",
+    "order_id, last_checked_at",
     { eq: { column: "has_subscription", value: true } },
   );
 
-  const known = new Set<string>(knownSubOrders.map((r) => r.order_id));
+  const nowMs = Date.now();
+  const known = new Set<string>(
+    knownSubRows
+      .filter((r) =>
+        !r.last_checked_at ||
+        nowMs - new Date(r.last_checked_at).getTime() >
+          KNOWN_REFRESH_COOLDOWN_MS
+      )
+      .map((r) => r.order_id),
+  );
+  // Track every known order (even skipped) so the never bucket below
+  // doesn't accidentally re-queue one as "never checked".
+  const knownAll = new Set<string>(knownSubRows.map((r) => r.order_id));
 
   // Priority 2: orders we've never checked.
   const allOrders = await fetchAllPaged<
@@ -218,7 +238,7 @@ async function buildOrderQueue(
 
   for (const o of allOrders ?? []) {
     const id = o.order_id as string;
-    if (known.has(id)) continue;
+    if (knownAll.has(id)) continue;
     const checked = checkedMap.get(id);
     if (!checked) {
       never.push(id);
