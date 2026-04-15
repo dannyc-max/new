@@ -24,25 +24,25 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const MONTO_BASE = "https://api.monto.io";
-// Monto rate-limits aggressively; keep concurrency low and retry 429s.
-const CONCURRENCY = 3;
-const INTER_CHUNK_DELAY_MS = 200;
-const MAX_429_RETRIES = 2;
-const RETRY_BACKOFF_MS = 2000;
+// Monto's API is Laravel throttled at ~30 req/min/IP (measured empirically:
+// 60 successes in a 120s probe, with 25 further requests returning 429).
+// Pace at 2200ms/request (~27/min) for safe headroom.
+const CONCURRENCY = 1;
+const INTER_REQUEST_DELAY_MS = 2200;
 const DEFAULT_LIMIT = 2000;
-const WALL_CLOCK_BUDGET_MS = 120_000;
+const WALL_CLOCK_BUDGET_MS = 140_000;
 
+// Monto returns each subscription as:
+//   { stripe_id: "sub_...", status: "trialing", created_at: "2026-..." }
+// That's all the fields Monto exposes; next_fulfillment_date, frequency,
+// product_name, customer_email etc. live in Stripe and can be hydrated
+// there if we ever pull /v1/subscriptions.
 type MontoSubscription = {
+  stripe_id?: string;
   id?: string;
   subscription_id?: string;
   status?: string;
-  next_fulfillment_date?: string;
-  nextFulfillmentDate?: string;
-  frequency?: string;
-  product_name?: string;
-  productName?: string;
-  customer_email?: string;
-  customerEmail?: string;
+  created_at?: string;
   [k: string]: unknown;
 };
 
@@ -72,6 +72,7 @@ Deno.serve(async (req: Request) => {
   let timedOut = false;
   const errorSamples: Array<{ order_id: string; error: string }> = [];
   const errorStatusCounts: Record<string, number> = {};
+  const subSamples: Array<{ order_id: string; raw: unknown }> = [];
 
   // Process in concurrent chunks.
   for (let i = 0; i < orderIds.length; i += CONCURRENCY) {
@@ -80,7 +81,7 @@ Deno.serve(async (req: Request) => {
       break;
     }
 
-    if (i > 0) await sleep(INTER_CHUNK_DELAY_MS);
+    if (i > 0) await sleep(INTER_REQUEST_DELAY_MS);
     const chunk = orderIds.slice(i, i + CONCURRENCY);
     const results = await Promise.all(
       chunk.map((id) => fetchForOrder(id, MONTO_KEY)),
@@ -105,18 +106,16 @@ Deno.serve(async (req: Request) => {
         last_checked_at: now,
         has_subscription: r.subscriptions.length > 0,
       });
+      if (r.subscriptions.length > 0 && subSamples.length < 3) {
+        subSamples.push({ order_id: r.order_id, raw: r.subscriptions });
+      }
       for (const s of r.subscriptions) {
-        const subId = s.id ?? s.subscription_id;
+        const subId = s.stripe_id ?? s.id ?? s.subscription_id;
         if (!subId) continue;
         subsRows.push({
           subscription_id: String(subId),
           order_id: r.order_id,
           status: s.status ?? null,
-          next_fulfillment_date: s.next_fulfillment_date ??
-            s.nextFulfillmentDate ?? null,
-          frequency: s.frequency ?? null,
-          product_name: s.product_name ?? s.productName ?? null,
-          customer_email: s.customer_email ?? s.customerEmail ?? null,
           raw: s as unknown as Record<string, unknown>,
           synced_at: now,
         });
@@ -148,6 +147,7 @@ Deno.serve(async (req: Request) => {
     errors,
     errorStatusCounts,
     errorSamples,
+    subSamples,
     timedOut,
     durationMs: Date.now() - started,
   });
@@ -237,49 +237,35 @@ async function fetchForOrder(
 > {
   const url =
     `${MONTO_BASE}/orders/${encodeURIComponent(orderId)}/subscriptions?api_key=${encodeURIComponent(apiKey)}`;
-  let lastErr = "";
-  for (let attempt = 0; attempt <= MAX_429_RETRIES; attempt++) {
-    try {
-      const resp = await fetch(url);
-      if (resp.status === 404) {
-        return { order_id: orderId, subscriptions: [], error: null };
-      }
-      if (resp.status === 429 || resp.status === 502 || resp.status === 503) {
-        const body = await resp.text();
-        lastErr = `monto ${resp.status}: ${body.slice(0, 120)}`;
-        if (attempt < MAX_429_RETRIES) {
-          await sleep(RETRY_BACKOFF_MS * (attempt + 1));
-          continue;
-        }
-        return { order_id: orderId, subscriptions: [], error: lastErr };
-      }
-      if (!resp.ok) {
-        const body = await resp.text();
-        return {
-          order_id: orderId,
-          subscriptions: [],
-          error: `monto ${resp.status}: ${body.slice(0, 120)}`,
-        };
-      }
-      const body = await resp.json();
-      const subs: MontoSubscription[] = Array.isArray(body)
-        ? body
-        : Array.isArray(body?.subscriptions)
-        ? body.subscriptions
-        : Array.isArray(body?.data)
-        ? body.data
-        : [];
-      return { order_id: orderId, subscriptions: subs, error: null };
-    } catch (e) {
-      lastErr = e instanceof Error ? e.message : String(e);
-      if (attempt < MAX_429_RETRIES) {
-        await sleep(RETRY_BACKOFF_MS * (attempt + 1));
-        continue;
-      }
-      return { order_id: orderId, subscriptions: [], error: lastErr };
+  try {
+    const resp = await fetch(url);
+    if (resp.status === 404) {
+      return { order_id: orderId, subscriptions: [], error: null };
     }
+    if (!resp.ok) {
+      const body = await resp.text();
+      return {
+        order_id: orderId,
+        subscriptions: [],
+        error: `monto ${resp.status}: ${body.slice(0, 120)}`,
+      };
+    }
+    const body = await resp.json();
+    const subs: MontoSubscription[] = Array.isArray(body)
+      ? body
+      : Array.isArray(body?.subscriptions)
+      ? body.subscriptions
+      : Array.isArray(body?.data)
+      ? body.data
+      : [];
+    return { order_id: orderId, subscriptions: subs, error: null };
+  } catch (e) {
+    return {
+      order_id: orderId,
+      subscriptions: [],
+      error: e instanceof Error ? e.message : String(e),
+    };
   }
-  return { order_id: orderId, subscriptions: [], error: lastErr };
 }
 
 function sleep(ms: number): Promise<void> {
